@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mobiconnect API</title>
+    <!-- ####################### bootstrap css -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/mono-blue.css">
+    <link rel="stylesheet" href="../css/ui.css">
+
+    <!-- ####################### favicon -->
+    <link rel="shortcut icon" href="../img/favicon32.png" sizes="32x32">
+
+    <!-- ####################### script -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<div id="wrap">
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="http://publisher.mobiconnect.co.kr" target="_blank" title="Mobiconnect Publisher Site"><img src="../img/logo_white.png" alt="mobiconnect logo"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../" title="Index">INDEX<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="../v1/" title="API v1">API v1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../v2/" title="API v2">API v2</a>
+                        <ul class="sub-nav bg-primary" style="display:none;">
+                            <li><a class="sub-link" href="../v2/" title="/offers">/offers</a></li>
+                            <li><a class="sub-link" href="../v2/#content-con1" title="/offers/{offerId}">/offers/{offerId}</a></li>
+                            <li><a class="sub-link" href="../v2/#content-con2" title="/offers/{offerId}/approval">/offers/{offerId}/approval</a></li>
+                            <li><a class="sub-link" href="../v2/#content-con3" title="Result Code">Result Code</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div id="container">
+        <div class="jumbotron">
+            <h2 class="display-2">API v1<small>( Updated at - 2018/01/20 )</small></h2>
+            <hr class="my-4">
+            <div class="content-con">
+                <div class="alert alert-dismissible alert-danger">
+                    <strong>ⓧ For newly integrating partners, please use <a class="alert-link" href="../v2/" title="API v2">API v2</a> to benefit from future updates. API v1 is outdated.</strong>
+                </div>
+                <div class="content-section">
+                    <dl>
+                        <dt>API URL</dt>
+                        <dd class="no-list-style">
+                            <div class="breadcrumb" style="display:inline-block;">
+                                http://publisher.mobiconnect.co.kr/publisher/openapi/
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>API Methods</dt>
+                        <dd><i class="i-circle bg-indiepink">GET</i>&nbsp;<b>findAll</b> : Provides list of all available offers</dd>
+                    </dl>
+                </div>
+            </div>
+            <hr class="my-5">
+            <div class="content-con">
+                <div class="content-bundle">
+                    <h3 style="cursor:default;"><i class="i-circle bg-indiepink">GET</i>&nbsp;<span class="text-bold">findAll</span></h3>
+
+                    <div class="content-section">
+                        <h4 class="display-4">Request</h4>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Required</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-light">
+                                <td>api_key</td>
+                                <td>String</td>
+                                <td>Y</td>
+                                <td>unique key</td>
+                                <td class="text-left">The key provided for publishers to call API.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>offer_id</td>
+                                <td>String</td>
+                                <td>N</td>
+                                <td>numbers (comma delimited)</td>
+                                <td class="text-left">The Offer's unique ID. Multiple inputs are available.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>require_approval</td>
+                                <td>String</td>
+                                <td>N</td>
+                                <td>enabled / disabled</td>
+                                <td class="text-left">Whether or not Offers require approval to run.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>payout_start</td>
+                                <td>String</td>
+                                <td>N</td>
+                                <td>numbers (includes up to second decimal place)</td>
+                                <td class="text-left">Minimum payout of the Offers.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>payout_end</td>
+                                <td>String</td>
+                                <td>N</td>
+                                <td>numbers (includes up to second decimal place)</td>
+                                <td class="text-left">Maximum payout of the Offers.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>cap_enabled</td>
+                                <td>String</td>
+                                <td>N</td>
+                                <td>enabled / disabled</td>
+                                <td class="text-left">Whether or not offers have maximum number of conversions allowed. If value is set to "disabled" then there is no cap.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="breadcrumb">
+                            http://publisher.mobiconnect.co.kr/publisher/openapi/<span class="text-red">findAll</span>?api_key={YOUR_API_KEY}&offer_id={}&require_approval={}&payout_start={}&payout_end={}&cap_enabled={}
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h4 class="display-4">Response</h4>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Example value</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-light">
+                                <td>offer_name</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>testoffer KR AOS Non</td>
+                                <td class="text-left">The Offer's name.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>status</td>
+                                <td>String</td>
+                                <td>active</td>
+                                <td>active</td>
+                                <td class="text-left">The status of the Offer. Publishers can only view active Offers.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>offer_id</td>
+                                <td>String</td>
+                                <td>numbers</td>
+                                <td>5090</td>
+                                <td class="text-left">The Offer's unique ID.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>expires_date</td>
+                                <td>String</td>
+                                <td>yyyy-mm-dd hh:mm:ss</td>
+                                <td>2018-12-31 23:59:59</td>
+                                <td class="text-left">Expiration date for the Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>category</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>Game_MainStream</td>
+                                <td class="text-left">The category used by MobiConnect to define the Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>preview_url</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>https://play.google.com/store/apps/details?id=com.mctestoffer</td>
+                                <td class="text-left">The final destination URL of the offer. Allows Publishers to view sample landing page.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>default_offer_url</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>http://tracking.mobidays.com/adserver/track/clickApi?offer_id=95513&pub_id=9999</td>
+                                <td class="text-left">The default URL of the offer. Often used to place click url.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>description</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>KPI / Deduction : D+1 Retention 10% and below (sub-pub 30 above)\nOS version : Android 4.0.3 or later\nTraffic : Strictly non-incent traffic only/Direct traffic preferred/No SNS traffic/No P2P</td>
+                                <td class="text-left">The description of the Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>currency</td>
+                                <td>String</td>
+                                <td>USD</td>
+                                <td>USD</td>
+                                <td class="text-left">Currency symbol for the Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>payout_type</td>
+                                <td>String</td>
+                                <td>cpa_flat</td>
+                                <td>cpa_flat</td>
+                                <td class="text-left">Specifies the method of calculating payout for this Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>payout_per_conversion</td>
+                                <td>String</td>
+                                <td>numbers (includes up to second decimal place)</td>
+                                <td>1.9</td>
+                                <td class="text-left">The flat rate/amount paid for this Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>require_approval</td>
+                                <td>String</td>
+                                <td>enabled / disabled</td>
+                                <td>Disabled</td>
+                                <td class="text-left">Whether or not Offers require approval to run.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>cap_enabled</td>
+                                <td>String</td>
+                                <td>enabled / disabled</td>
+                                <td>Enabled</td>
+                                <td class="text-left">Whether or not offers have maximum number of conversions allowed. If value is set to "disabled" then there is no cap.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>daily_conversion_cap</td>
+                                <td>String</td>
+                                <td>numbers</td>
+                                <td>1000</td>
+                                <td class="text-left">Maximum number of conversions allowed per day for this Offer. If value is set to "0" then there is no cap.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>monthly_conversion_cap</td>
+                                <td>String</td>
+                                <td>numbers</td>
+                                <td>5000</td>
+                                <td class="text-left">Maximum number of conversions allowed per month for this Offer. If value is set to "0" then there is no cap.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>country_code</td>
+                                <td>String</td>
+                                <td>- (comma delimited)</td>
+                                <td>KR,CN,US</td>
+                                <td class="text-left">Targeted geo allowed for the Offer.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>creatives_name</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>Test Creatives</td>
+                                <td class="text-left">The name of the creatives.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>creatives_file_name</td>
+                                <td>String</td>
+                                <td>file name</td>
+                                <td>Test_Creatives.zip</td>
+                                <td class="text-left">The name of the file attached for creatives.</td>
+                            </tr>
+                            <tr class="table-light">
+                                <td>creatives_file_url</td>
+                                <td>String</td>
+                                <td>-</td>
+                                <td>https://mobione.s3.amazonaws.com/Test_Creatives.zip</td>
+                                <td class="text-left">The download URL for creative files attached.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="content-section">
+                        <pre>
+                            <code class="json">
+
+            {
+                "request": {
+                    "api_key": "d4ec1c075c813662bc083cf6f4a7614aak8eu68c1463035484a1e936fe4aaa8a",
+                    "publisherId": "1",
+                    "offer_id": null,
+                    "require_approval": null,
+                    "payout_start": null,
+                    "payout_end": null,
+                    "cap_enabled": null
+                },
+                "response": {
+                    "success": "true",
+                    "error_messages": "",
+                    "offers": [
+                        {
+                            "details": {
+                                "offer_name": "testoffer Android KR Non",
+                                "status": "active",
+                                "offer_id": "12345",
+                                "expires_date": "2017-12-31 00:00:00",
+                                "category": "Game_MainStream",
+                                "preview_url": "https://play.google.com/store/apps/details?id=com.test.google",
+                                "default_offer_url": "http://click.mobiconnect.co.kr/tracking/track/clickApi?offer_id=12345&pub_id=1",
+                                "description": "KPI(Soft): D1 Retention rate 30%+\r\n1. Restrictions: Strictly non-incent traffic\r\n2. Android 4.0+",
+                                "currency": "USD",
+                                "payout_type": "cpa_flat",
+                                "payout_per_conversion": "2.5"
+                            },
+                            "settings": {
+                                "require_approval": "Enabled",
+                                "cap_enabled": "Enabled",
+                                "daily_conversion_cap": "200",
+                                "monthly_conversion_cap": "0"
+                            },
+                            "targeting": [
+                                {
+                                    "country_code": "KR"
+                                }
+                            ],
+                            "creative_files": [
+                                {
+                                    "creatives_name": "test1",
+                                    "creatives_file_name": "test1.0928.zip",
+                                    "creatives_file_url": "https://mobione.s3.amazonaws.com/test1.0928.zip"
+                                }
+                            ]
+                        },
+                        {
+                            "details": {
+                                "offer_name": "demo iOS KR Non",
+                                "status": "active",
+                                "offer_id": "19988",
+                                "expires_date": "2018-12-31 00:00:00",
+                                "category": "Game_iOS",
+                                "preview_url": "https://itunes.apple.com/us/app/%EB%84%A4%EB%AA%A8-%EC%82%AC",
+                                "default_offer_url": "http://click.mobiconnect.co.kr/tracking/track/clickApi?offer_id=19988&pub_id=1",
+                                "description": "KPI(Soft) : D1 Retention rate 30%+ \r\n1. Deduction condition: Installs under 10% D+1 Retention rate or 10% will be deducted. (30+ installs per day) \r\n2. Restrictions : Strictly non-incent traffic 3. iOS 9.0+\r\n",
+                                "currency": "USD",
+                                "payout_type": "cpa_flat",
+                                "payout_per_conversion": "0.65"
+                            },
+                            "settings": {
+                                "require_approval": "Enabled",
+                                "cap_enabled": "Enabled",
+                                "daily_conversion_cap": "200",
+                                "monthly_conversion_cap": "6000"
+                            },
+                            "targeting": [
+                                {
+                                    "country_code": "KR"
+                                }
+                            ],
+                            "creative_files": [
+                                {
+                                    "creatives_name": "demo",
+                                    "creatives_file_name": "demo.zip",
+                                    "creatives_file_url": "https://mobione.s3.amazonaws.com/demo1234.zip"
+                                }
+                            ]
+                        },
+                        {
+                            "details": {
+                                "offer_name": "testdemo KR AOS Non",
+                                "status": "active",
+                                "offer_id": "99999",
+                                "expires_date": "2018-12-31 23:59:59.0",
+                                "category": "Game_MainStream",
+                                "preview_url": "https://play.google.com/store/apps/details?id=com.testdemo.aa",
+                                "default_offer_url": "http://click.mobiconnect.co.kr/tracking/track/clickApi?offer_id=99999&pub_id=1",
+                                "description": "KPI / Deduction : D+1 Retention 10% and below (sub-pub 30 above)\nOS version : Android 4.0.3 or later\nTraffic : Strictly non-incent traffic only/Direct traffic preferred/No SNS traffic/No P2P",
+                                "currency": "USD",
+                                "payout_type": "cpa_flat",
+                                "payout_per_conversion": "1.9"
+                            },
+                            "settings": {
+                                "require_approval": "Disabled",
+                                "cap_enabled": "Enabled",
+                                "daily_conversion_cap": "1000",
+                                "monthly_conversion_cap": "0"
+                            },
+                            "targeting": [
+                                {
+                                    "country_code": "KR"
+                                }
+                            ],
+                            "creative_files": []
+                        }
+                    ]
+                }
+            }
+
+                            </code>
+                        </pre>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer_in">
+            <span class="footer_logo">
+                <img src="../img/footer_logo.png" alt="footer logo" />
+            </span>
+            <span>&copy; 2018 Mobidays, Inc. All Right Reserved.</span>
+        </div>
+    </footer>
+    <p class="gotoTop">
+        <a href="#none" title="go to top"><img src="../img/ico_arr.png" alt="arrow icon"/></a>
+    </p>
+</div>
+</body>
+</html>

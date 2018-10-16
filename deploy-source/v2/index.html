@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mobiconnect API</title>
+    <!-- ####################### bootstrap css -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/mono-blue.css">
+    <link rel="stylesheet" href="../css/ui.css">
+
+    <!-- ####################### favicon -->
+    <link rel="shortcut icon" href="../img/favicon32.png" sizes="32x32">
+
+    <!-- ####################### script -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<div id="wrap">
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="http://publisher.mobiconnect.co.kr" target="_blank" title="Mobiconnect Publisher Site"><img src="../img/logo_white.png" alt="mobiconnect logo"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../" title="Index">INDEX<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../v1/" title="API v1">API v1</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="../v2/" title="API v2">API v2</a>
+                        <ul class="sub-nav bg-primary">
+                            <li><a class="sub-link" href="javascript:findArea(0)" title="/offers">/offers</a></li>
+                            <li><a class="sub-link" href="javascript:findArea(1)" title="/offers/{offerId}">/offers/{offerId}</a></li>
+                            <li><a class="sub-link" href="javascript:findArea(2)" title="/offers/{offerId}/approval">/offers/{offerId}/approval</a></li>
+                            <li><a class="sub-link" href="javascript:findArea(3)" title="Result Code">Result Code</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div id="container">
+        <div class="jumbotron">
+            <h2 class="display-3">API v2<small>( Updated at - 2018/07/31 )</small></h2>
+            <hr class="my-4">
+            <div class="content-con">
+                <div class="content-section">
+                    <dl>
+                        <dt>API URL</dt>
+                        <dd class="no-list-style">
+                            <div class="breadcrumb" style="display:inline-block;">
+                                http://api.mobiconnect.co.kr/v2/publisher/
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>API Methods</dt>
+                        <dd>
+                            <i class="i-circle bg-indiepink">GET</i>
+                            <a class="text-blue" href="javascript:findArea(0)" title="/offers">/offers</a>
+                            : Returns all available offers.
+                        </dd>
+                        <dd>
+                            <i class="i-circle bg-indiepink">GET</i>
+                            <a class="text-blue" href="javascript:findArea(1)" title="/offers/{offerId}">/offers/{offerId}</a>
+                            : Returns one or more offers by their IDs.
+                        </dd>
+                        <dd>
+                            <i class="i-circle bg-mint">POST</i>
+                            <a class="text-blue" href="javascript:findArea(2)" title="/offers/{offerId}/approval">/offers/{offerId}/approval</a>
+                            : Requests approval for one or more offers by their IDs. Returns approval status of the offer if already in request.
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <hr class="my-5">
+            <div class="content-con">
+                <div id="content-con0" class="content-bundle">
+                    <h3><i class="i-circle bg-indiepink">GET</i>&nbsp;<span class="text-bold">/offers</span><i class="i-arrow"></i></span></h3>
+                    <div class="content-slide">
+                        <div class="content-section">
+                            <h4 class="display-4">Request</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Required</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>api_key *</td>
+                                    <td>STRING</td>
+                                    <td>Y</td>
+                                    <td>unique key</td>
+                                    <td class="text-left">The key provided for publishers to call API.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>os</td>
+                                    <td>String</td>
+                                    <td>N</td>
+                                    <td>0/1/2</td>
+                                    <td class="text-left">
+                                        The Offer's OS type.
+                                        <br/>0 - iOS
+                                        <br/>1 - AOS (Android)
+                                        <br/>2- ETC
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>categories</td>
+                                    <td>STRING ARRAY(comma delimited)</td>
+                                    <td>N</td>
+                                    <td><a class="text-blue" href="../category/" target="_blank">Category list</a></td>
+                                    <td class="text-left">The category used by MobiConnect to define the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>countries</td>
+                                    <td>STRING ARRAY(comma delimited)</td>
+                                    <td>N</td>
+                                    <td><a class="text-blue" href="../country/" target="_blank">Country list</a></td>
+                                    <td class="text-left">Targeted geo allowed for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_start</td>
+                                    <td>NUMBER(20,2)</td>
+                                    <td>N</td>
+                                    <td>numbers (x.xx)</td>
+                                    <td class="text-left">Minimum payout of the Offers.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_end</td>
+                                    <td>NUMBER(20,2)</td>
+                                    <td>N</td>
+                                    <td>numbers (x.xx)</td>
+                                    <td class="text-left">Maximum payout of the Offers.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>cap</td>
+                                    <td>STRING</td>
+                                    <td>N</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not offers have maximum number of conversions allowed. If value is set to "0" then there is no cap.
+                                        <br/>0 - CAP open
+                                        <br/>1 - CAP enabled
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_type</td>
+                                    <td>STRING</td>
+                                    <td>N</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not Offers require approval to run.
+                                        <br/>0 - Requires approval : false
+                                        <br/>1 - Requires approval : true
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_status</td>
+                                    <td>STRING</td>
+                                    <td>N</td>
+                                    <td>1 / 2 / 3 / 4</td>
+                                    <td class="text-left">
+                                        The approval status of the offer.
+                                        <br/>1 - unapproved : Offer is available for approval request
+                                        <br/>2 - pending : Request for approval is on review
+                                        <br/>3 - approved : Offer has been approved
+                                        <br/>4 - rejected : Request for approval has been rejected
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="breadcrumb">
+                                　http://api.mobiconnect.co.kr/v2/publisher<span class="text-red">/offers</span>?api_key={YOUR_API_KEY}&os={}&categories={}&countries={}&payout_start={}&payout_end={}&cap={}&approval_type={}&approval_status={}
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <h4 class="display-4">Response</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>offer_id</td>
+                                    <td>STRING</td>
+                                    <td>numbers</td>
+                                    <td class="text-left">The Offer's unique ID.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>offer_name</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The Offer's name.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>offer_status</td>
+                                    <td>STRING</td>
+                                    <td>active / pending / paused</td>
+                                    <td class="text-left">The status of the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>os</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1 / 2</td>
+                                    <td class="text-left">
+                                        The Offer's OS type.
+                                        <br/>0 - iOS
+                                        <br/>1 - AOS (Android)
+                                        <br/>2- ETC
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>expires_date</td>
+                                    <td>DATETIME</td>
+                                    <td>yyyy-mm-dd hh:mm:ss</td>
+                                    <td class="text-left">Expiration date for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>category</td>
+                                    <td>STRING</td>
+                                    <td><a class="text-blue" href="../category/" target="_blank">Category list</a></td>
+                                    <td class="text-left">The category used by MobiConnect to define the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>preview_url</td>
+                                    <td>STRING</td>
+                                    <td>url</td>
+                                    <td class="text-left">The final destination URL of the offer. Allows Publishers to view sample landing page.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>description</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The description of the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>currency</td>
+                                    <td>STRING</td>
+                                    <td>usd</td>
+                                    <td class="text-left">Currency symbol for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_type</td>
+                                    <td>STRING</td>
+                                    <td>CPI / CPA / ETC</td>
+                                    <td class="text-left">Specifies the method of calculating payout for this Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_per_conversion</td>
+                                    <td>NUMBER(20,2)</td>
+                                    <td>numbers (x.xx)</td>
+                                    <td class="text-left">The flat rate/amount paid for this Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>cap</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not offers have maximum number of conversions allowed. If value is set to "0" then there is no cap.
+                                        <br/>0 - CAP open
+                                        <br/>1 - CAP enabled
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>daily_conversion_cap</td>
+                                    <td>NUMBER(11,0)</td>
+                                    <td>n</td>
+                                    <td class="text-left">Maximum number of conversions allowed per day for this Offer. If value is set to "0" then there is no cap.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>monthly_conversion_cap</td>
+                                    <td>NUMBER(11,0)</td>
+                                    <td>n</td>
+                                    <td class="text-left">Maximum number of conversions allowed per month for this Offer. If value is set to "0" then there is no cap.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>country_codes</td>
+                                    <td>ARRAY</td>
+                                    <td><a class="text-blue" href="../country/" target="_blank">Country list</a></td>
+                                    <td class="text-left">Targeted geo allowed for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_type</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not Offers require approval to run.
+                                        <br/>0 - Requires approval : false
+                                        <br/>1 - Requires approval : true
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_status</td>
+                                    <td>STRING</td>
+                                    <td>unapproved / pending / approved / rejected</td>
+                                    <td class="text-left">
+                                        The approval status of the offer.
+                                        <br/>1 - unapproved : Offer is available for approval request
+                                        <br/>2 - pending : Request for approval is on review
+                                        <br/>3 - approved : Offer has been approved
+                                        <br/>4 - rejected : Request for approval has been rejected
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>rejected_note</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">Reason for rejection.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="content-section">
+                            <pre>
+                            <code class="json">
+            {
+                "details": {
+                    "offer_id": "5080",
+                    "offer_name": "BlueSea_Android_KR_Non_Exclusive",
+                    "offer_status": "active",
+                    "os": "1",
+                    "expires_date": "2018-02-13 11:59:59",
+                    "category": "49",
+                    "preview_url": "https://play.google.com/store/apps/details?id=com.ss.bluesea",
+                    "description": "KPI(Soft) : D1 Retention rate 40%+ 1. If D1 RR is lower than 5% with 30+ daily installs it might be rejected by the advertiser 2. Restriction : No Incent / No Pop-up / No Pop-under / No Adult / No Push notification"
+                },
+                "payout": {
+                    "currency": "USD",
+                    "payout_type": "CPI",
+                    "payout_per_conversion": 1.7
+                },
+                "settings": {
+                    "cap": "1",
+                    "daily_conversion_cap": 250,
+                    "monthly_conversion_cap": 0
+                },
+                "targeting": {
+                    "country_codes": [
+                        "KR"
+                    ]
+                },
+                "approval": {
+                    "approval_type": "0",
+                    "approval_status": "unapproved",
+                    "rejected_note": ""
+                }
+            },
+            {
+                "details": {
+                    "offer_id": "5081",
+                    "offer_name": "jumpbrori_iOS_KR_Non_Direct",
+                    "offer_status": "active",
+                    "os": "0",
+                    "expires_date": "2018-02-13 11:59:59",
+                    "category": "49",
+                    "preview_url": "https://itunes.apple.com/US/app/id1234561234?mt=8",
+                    "description": "KPI(Soft) : D1 Retention rate 40%+ 1. If D1 RR is lower than 5% with 30+ daily installs it might be rejected by the advertiser 2. Restriction : No Incent / No Pop-up / No Pop-under / No Adult / No Push notification"
+                },
+                "payout": {
+                    "currency": "USD",
+                    "payout_type": "CPI",
+                    "payout_per_conversion": 1.7
+                },
+                "settings": {
+                    "cap": "1",
+                    "daily_conversion_cap": 150,
+                    "monthly_conversion_cap": 0
+                },
+                "targeting": {
+                    "country_codes": [
+                        "KR"
+                    ]
+                },
+                "approval": {
+                    "approval_type": "0",
+                    "approval_status": "approved",
+                    "rejected_note": ""
+                }
+            },
+            {
+                "details": {
+                    "offer_id": "5090",
+                    "offer_name": "Hoverboard KR AOS Non_HO",
+                    "offer_status": "active",
+                    "os": "1",
+                    "expires_date": "2018-12-31 11:59:59",
+                    "category": "25",
+                    "preview_url": "https://play.google.com/store/apps/details?id=com.hoverboard",
+                    "description": "KPI / Deduction : D+1 Retention 10% and below (sub-pub 30 above) OS version : Android 4.0.3 or later Traffic : Strictly non-incent traffic only/Direct traffic preferred/No SNS traffic/No P2P"
+                },
+                "payout": {
+                    "currency": "USD",
+                    "payout_type": "CPI",
+                    "payout_per_conversion": 1.9
+                },
+                "settings": {
+                    "cap": "1",
+                    "daily_conversion_cap": 1000,
+                    "monthly_conversion_cap": 0
+                },
+                "targeting": {
+                    "country_codes": [
+                        "KR"
+                    ]
+                },
+                "approval": {
+                    "approval_type": "0",
+                    "approval_status": "unapproved",
+                    "rejected_note": ""
+                }
+            }
+                            </code>
+                        </pre>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="content-con1" class="content-bundle">
+                    <h3><i class="i-circle bg-indiepink">GET</i>&nbsp;<span class="text-bold">/offers/{offerId}</span><i class="i-arrow"></i></h3>
+                    <div class="content-slide">
+                        <div class="content-section">
+                            <h4 class="display-4">Request</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Required</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>api_key</td>
+                                    <td>String</td>
+                                    <td>Y</td>
+                                    <td>unique key</td>
+                                    <td class="text-left">The key provided for publishers to call API.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="breadcrumb">
+                                http://api.mobiconnect.co.kr/v2/publisher<span class="text-red">/offers/{offerId}</span>?api_key={YOUR_API_KEY}
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <h4 class="display-4">Response</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>offer_id</td>
+                                    <td>STRING</td>
+                                    <td>numbers</td>
+                                    <td class="text-left">The Offer's unique ID.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>offer_name</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The Offer's name.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>offer_status</td>
+                                    <td>STRING</td>
+                                    <td>active / pending / paused</td>
+                                    <td class="text-left">The status of the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>os</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1 / 2</td>
+                                    <td class="text-left">
+                                        The Offer's OS type.
+                                        <br/>0 - iOS
+                                        <br/>1 - AOS (Android)
+                                        <br/>2- ETC
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>expires_date</td>
+                                    <td>DATETIME</td>
+                                    <td>yyyy-mm-dd hh:mm:ss</td>
+                                    <td class="text-left">Expiration date for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>category</td>
+                                    <td>STRING</td>
+                                    <td><a class="text-blue" href="../category/" target="_blank">Category list</a></td>
+                                    <td class="text-left">The category used by MobiConnect to define the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>preview_url</td>
+                                    <td>STRING</td>
+                                    <td>url</td>
+                                    <td class="text-left">The final destination URL of the offer. Allows Publishers to view sample landing page.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>description</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The description of the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>currency</td>
+                                    <td>STRING</td>
+                                    <td>usd</td>
+                                    <td class="text-left">Currency symbol for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_type</td>
+                                    <td>STRING</td>
+                                    <td>CPI / CPA / ETC</td>
+                                    <td class="text-left">Specifies the method of calculating payout for this Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>payout_per_conversion</td>
+                                    <td>NUMBER(20,2)</td>
+                                    <td>numbers (x.xx)</td>
+                                    <td class="text-left">The flat rate/amount paid for this Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>cap</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not offers have maximum number of conversions allowed. If value is set to "0" then there is no cap.
+                                        <br/>0 - CAP open
+                                        <br/>1 - CAP enabled
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>daily_conversion_cap</td>
+                                    <td>NUMBER(11,0)</td>
+                                    <td>n</td>
+                                    <td class="text-left">Maximum number of conversions allowed per day for this Offer. If value is set to "0" then there is no cap.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>monthly_conversion_cap</td>
+                                    <td>NUMBER(11,0)</td>
+                                    <td>n</td>
+                                    <td class="text-left">Maximum number of conversions allowed per month for this Offer. If value is set to "0" then there is no cap.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>country_codes</td>
+                                    <td>ARRAY</td>
+                                    <td><a class="text-blue" href="../country/" target="_blank">Country list</a></td>
+                                    <td class="text-left">Targeted geo allowed for the Offer.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_type</td>
+                                    <td>STRING</td>
+                                    <td>0 / 1</td>
+                                    <td class="text-left">
+                                        Whether or not Offers require approval to run.
+                                        <br/>0 - Requires approval : false
+                                        <br/>1 - Requires approval : true
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_status</td>
+                                    <td>STRING</td>
+                                    <td>unapproved / pending / approved / rejected</td>
+                                    <td class="text-left">
+                                        The approval status of the offer.
+                                        <br/>1 - unapproved : Offer is available for approval request
+                                        <br/>2 - pending : Request for approval is on review
+                                        <br/>3 - approved : Offer has been approved
+                                        <br/>4 - rejected : Request for approval has been rejected
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>rejected_note</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">Reason for rejection.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>tracking_url</td>
+                                    <td>STRING</td>
+                                    <td>url</td>
+                                    <td class="text-left">The default URL of the offer. Often used to place click url.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>creative_name</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The name of the creatives.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>creative_file_name</td>
+                                    <td>STRING</td>
+                                    <td>text</td>
+                                    <td class="text-left">The name of the file attached for creatives.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>creative_file_url</td>
+                                    <td>STRING</td>
+                                    <td>url</td>
+                                    <td class="text-left">The download URL for creative files attached.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="content-section">
+                            <pre>
+                                <code class="json">
+            {
+                "details": {
+                    "offer_id": "5238",
+                    "offer_name": "SkyBall_Android_KR_Non",
+                    "offer_status": "active",
+                    "os": "1",
+                    "expires_date": "2018-07-31 11:59:59",
+                    "category": "51",
+                    "preview_url": "https://play.google.com/store/apps/details?id=kr.co.skyball.start",
+                    "description": "KPI :  - Account opening completed - D+1 Retention 20 % and D+7 Retention 10 % Hard KPI: 1) If D1 RR is under 10% with 30+ daily installs, it will be rejected 2) If CTIT is under 10 sec, it will be rejected"
+                },
+                "payout": {
+                    "currency": "USD",
+                    "payout_type": "CPI",
+                    "payout_per_conversion": 2.4
+                },
+                "settings": {
+                    "cap": "1",
+                    "daily_conversion_cap": 100,
+                    "monthly_conversion_cap": 3100
+                },
+                "targeting": {
+                    "country_codes": [
+                        "KR"
+                    ]
+                },
+                "approval": {
+                    "approval_type": "1",
+                    "approval_status": "approved",
+                    "rejected_note": ""
+                },
+                "tracking": {
+                    "tracking_url": "http://click.mobiconnect.co.kr/tracking/track/clickApi?offer_id=5238&pub_id=9999"
+                },
+                "creatives": [
+                                {
+                                    "creatives_name": "test",
+                                    "creatives_file_name": "mobiinside.png",
+                                    "creatives_file_url": "http://publisher.mobiconnect.co.kr/publisher/adoffers/getAdOfferSettingCreativeFiles?offerId=5238&creativesId=9999"
+                                },
+                                {
+                                    "creatives_name": "testtest",
+                                    "creatives_file_name": "login_logo.png",
+                                    "creatives_file_url": "http://publisher.mobiconnect.co.kr/publisher/adoffers/getAdOfferSettingCreativeFiles?offerId=5238&creativesId=9999"
+                                }
+                            ]
+            }
+                                </code>
+                            </pre>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="content-con2" class="content-bundle">
+                    <h3><i class="i-circle bg-mint">POST</i>&nbsp;<span class="text-bold">/offers/{offerId}/approval</span><i class="i-arrow"></i></h3>
+                    <div class="content-slide">
+                        <div class="content-section">
+                            <h4 class="display-4">Request</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Required</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>api_key</td>
+                                    <td>String</td>
+                                    <td>Y</td>
+                                    <td>unique key</td>
+                                    <td class="text-left">The key provided for publishers to call API.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="breadcrumb">
+                                http://api.mobiconnect.co.kr/v2/publisher<span class="text-red">/offers/{offerId}/approval</span>?api_key={YOUR_API_KEY}
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <h4 class="display-4">Response</h4>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Required</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>offer id</td>
+                                    <td>STRING</td>
+                                    <td>Y</td>
+                                    <td>numbers</td>
+                                    <td class="text-left">The Offer's unique ID.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>approval_status</td>
+                                    <td>STRING</td>
+                                    <td>Y</td>
+                                    <td>unapproved / pending / approved / rejected</td>
+                                    <td class="text-left">
+                                        The approval status of the offer.
+                                        <br/>1 - unapproved : Offer is available for approval request
+                                        <br/>2 - pending : Request for approval is on review
+                                        <br/>3 - approved : Offer has been approved
+                                        <br/>4 - rejected : Request for approval has been rejected
+                                    </td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>comments</td>
+                                    <td>String</td>
+                                    <td>Y</td>
+                                    <td>text</td>
+                                    <td class="text-left">Comments for the request.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="content-section">
+                            <pre>
+                            <code class="json" style="height:170px;">
+            {
+                "offer_id": "5273",
+                "approval_status": "pending",
+                "comments": "The request for approval has been completed."
+            }
+                            </code>
+                        </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-con3" class="content-bundle">
+                    <h3 class="border-top-mint"><span class="text-bold">Result Code</span><i class="i-arrow"></i></h3>
+                    <div class="content-slide">
+                        <div class="content-section">
+                            <h4 class="display-4">Result Code</h4>
+                            <table class="table table-hover">
+                                <colgroup>
+                                    <col style="width:20%;"/>
+                                    <col style="width:20%;"/>
+                                    <col style="width:20%;"/>
+                                    <col style="width:40%;"/>
+                                </colgroup>
+                                <thead>
+                                <tr class="table-secondary">
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-light">
+                                    <td>200</td>
+                                    <td>Success</td>
+                                    <td>OK</td>
+                                    <td class="text-left">Success response.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>204</td>
+                                    <td>Success</td>
+                                    <td>No contents</td>
+                                    <td class="text-left">Success response with no result.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>400</td>
+                                    <td>Error</td>
+                                    <td>Bad Request</td>
+                                    <td class="text-left">Failed response due to invalid parameter.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>401</td>
+                                    <td>Error</td>
+                                    <td>Unauthorized</td>
+                                    <td class="text-left">Failed response due to invalid API Key token.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>403</td>
+                                    <td>Error</td>
+                                    <td>Forbidden</td>
+                                    <td class="text-left">Failed response due to prohibited request.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>404</td>
+                                    <td>Error</td>
+                                    <td>Not Found</td>
+                                    <td class="text-left">Failed response due to invalid URL.</td>
+                                </tr>
+                                <tr class="table-light">
+                                    <td>500</td>
+                                    <td>Error</td>
+                                    <td>Internal Server Error</td>
+                                    <td class="text-left">Failed response due to server error.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer_in">
+            <span class="footer_logo">
+                <img src="../img/footer_logo.png" alt="footer logo" />
+                </span>
+            <span>&copy; 2018 Mobidays, Inc. All Right Reserved.</span>
+        </div>
+    </footer>
+    <p class="gotoTop">
+        <a href="#none" title="go to top"><img src="../img/ico_arr.png" alt="arrow icon"/></a>
+    </p>
+</div>
+</body>
+</html>
