@@ -121,6 +121,17 @@ table tr td.text-left{text-align:left; padding-left:30px !important; padding-rig
     .table-noboot tr th{padding:0.4rem 0rem !important;}
     .table-noboot tr td.text-left{padding-left:10px !important; padding-right:10px !important;}
 }
+
 @media screen and (max-width: 1024px){
+    h3 span.text-bold{font-size:0.7rem;}
+    h3 span.text-bold{font-size:1.5rem; letter-spacing:0;}
+    h4 {letter-spacing: 0;}
+
     .table-w70p{width:100%;}
+    .table{font-size:0.8rem; line-height:1.2;}
+    .table thead th{padding:0.3rem 0.2rem;}
+    .table tbody td{padding:0.3rem; word-break: break-word;}
+    .breadcrumb{font-size:0.8rem;}
+    pre code{font-size:0.7rem !important;}
+    .i-circle{margin-left:0;}
 }
