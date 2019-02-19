@@ -7,6 +7,7 @@ live at http://mobidays-dev.gitlab.io/mobiconnect-introduce/api/
 ## Credits
 - [JQuery](http://jquery.com/)  
 - [BootStrap](https://getbootstrap.com/)
+- [Free themes for Bootstrap](https://bootswatch.com/)
 - [highlight.js](https://highlightjs.org/)
 
 ## Changelog
