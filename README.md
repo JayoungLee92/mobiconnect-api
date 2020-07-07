@@ -12,14 +12,13 @@
 - Period : About 1 Week
 - live at http://mobidays-dev.gitlab.io/mobiconnect-introduce/api/
 
-
-## Changelog
-- 16 Oct 2018 : first commit
-- 18 Oct 2018 : add media query for mobile
-
 ## Contents
 - [x] api/index
 - [x] api/v1
 - [x] api/v2 
 - [x] api/category 
 - [x] api/country
+
+## Changelog
+- 16 Oct 2018 : first commit
+- 18 Oct 2018 : add media query for mobile
